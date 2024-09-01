@@ -1,6 +1,6 @@
 const garmin = require("garmin-connect");
 const { GarminConnect } = garmin;
-const { existsSync } = require("fs");
+const { existsSync, mkdirSync } = require("fs");
 const db =require('../database/appDb');
 
 /**
@@ -42,14 +42,17 @@ const getClient = async (username, password, tokenFolder) => {
     return client;
 };
 
-
+const tokensDir = "garmin_tokens";
 exports.update = () => {
+    if (!existsSync(tokensDir)) {
+        mkdirSync(tokensDir);
+    }
     db.setup().then(async () => {
         const garminPlayers=await db.getObjectsFromQueryRows("CALL GetGarminPlayers()", ["name", "garmin_user", "garmin_pass"]);
         const date = new Date();
         for (const player of garminPlayers) {
             console.log(player.name);
-            const client = await getClient(player.garmin_user, player.garmin_pass, "garmin_tokens/"+player.name);
+            const client = await getClient(player.garmin_user, player.garmin_pass, `${tokensDir}/${player.name}`);
             const date = new Date();
             for(let day_interval=0; day_interval<14; day_interval++) {
                 const steps = await client.getSteps(date);
