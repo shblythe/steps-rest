@@ -29,7 +29,7 @@ if (HTTP_HOST) {
 		key:	fs.readFileSync('/etc/letsencrypt/live/vps.urwick.co.uk/privkey.pem'),
 		cert:	fs.readFileSync('/etc/letsencrypt/live/vps.urwick.co.uk/fullchain.pem')
 	}
-	https.createServer(options,app).listen(8443);
+	https.createServer(options,app).listen(9443);
 }
 
 app.set('view engine', 'pug');
