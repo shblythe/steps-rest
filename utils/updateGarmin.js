@@ -64,6 +64,5 @@ exports.update = () => {
                 date.setDate(date.getDate() - 1); // go back a day
             }
         }
-        await db.close();
     });
 }
