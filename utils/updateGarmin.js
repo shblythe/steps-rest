@@ -56,9 +56,11 @@ exports.update = () => {
             const date = new Date();
             for(let day_interval=0; day_interval<14; day_interval++) {
                 const steps = await client.getSteps(date);
-                const dbDate = date.toISOString().substring(0,10);
-                console.log(dbDate, steps);
-                await db.runQuery(`CALL AddSteps('${player.name}','${dbDate}','${steps}')`);
+                if (steps!=null) {
+                    const dbDate = date.toISOString().substring(0,10);
+                    console.log(dbDate, steps);
+                    await db.runQuery(`CALL AddSteps('${player.name}','${dbDate}','${steps}')`);
+                }
                 date.setDate(date.getDate() - 1); // go back a day
             }
         }
