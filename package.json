@@ -1,0 +1,26 @@
+{
+  "name": "steps-rest",
+  "version": "1.0.0",
+  "description": "REST backend for cross-platform steps challenge",
+  "main": "app.js",
+  "scripts": {
+    "start": "cross-env-shell HTTP_HOST=3000 node ./node_modules/nodemon/bin/nodemon.js app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Stephen Blythe",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "garmin-connect": "1.6",
+    "http": "^0.0.1-security",
+    "https": "^1.0.0",
+    "mysql": "^2.18.1",
+    "node-schedule": "^2.1.1",
+    "pug": "^3.0.3"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "nodemon": "^2.0.13"
+  }
+}

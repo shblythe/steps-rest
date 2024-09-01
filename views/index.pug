@@ -1,0 +1,11 @@
+html
+    head
+        title= "Step Challenge"
+    body
+        each week in weeks
+            h1 #{week.name} w/c #{week.date}
+            table(border='1')
+                each player in week.players
+                    tr
+                        td= player.name
+                        td= player.steps
