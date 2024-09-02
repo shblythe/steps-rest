@@ -1,11 +1,18 @@
 html
     head
         title= "Step Challenge"
+        link(type="text/css" rel="stylesheet"
+                href="css/materialize.min.css" media="screen,projection")
+        meta(http-equiv="refresh" content="60")
+        meta(name="viewport" content="width=device-width, initial-scale=1.0")
     body
-        each week in weeks
-            h1 #{week.name} w/c #{week.date}
-            table(border='1')
-                each player in week.players
+        div(class="container")
+            each week in weeks
+                h4 #{week.name}
+                table(style="width:100%")
                     tr
-                        td= player.name
-                        td= player.steps
+                        th(colspan='2') #{week.date}
+                    each player in week.players
+                        tr
+                            td(width="100px")= player.name
+                            td= player.steps

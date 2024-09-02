@@ -39,6 +39,7 @@ app.use(cors({
 }));
 app.use('/', indexRouter);
 app.use('/rest',restRouter);
+app.use(express.static('node_modules/materialize-css/dist'));
 
 module.exports = app;
 
