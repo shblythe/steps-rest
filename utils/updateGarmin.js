@@ -1,7 +1,7 @@
 const garmin = require("garmin-connect");
 const { GarminConnect } = garmin;
 const { existsSync, mkdirSync } = require("fs");
-const db =require('../database/appDb');
+const dal =require('../database/dal');
 
 /**
  * Get a GarminConnect client.
@@ -43,26 +43,22 @@ const getClient = async (username, password, tokenFolder) => {
 };
 
 const tokensDir = "garmin_tokens";
-exports.update = () => {
+exports.update = async () => {
     if (!existsSync(tokensDir)) {
         mkdirSync(tokensDir);
     }
-    db.setup().then(async () => {
-        const garminPlayers=await db.getObjectsFromQueryRows("CALL GetGarminPlayers()", ["name", "garmin_user", "garmin_pass"]);
+    const garminPlayers=await dal.getGarminPlayers();
+    const date = new Date();
+    for (const player of garminPlayers) {
+        const client = await getClient(player.garmin_user, player.garmin_pass, `${tokensDir}/${player.name}`);
         const date = new Date();
-        for (const player of garminPlayers) {
-            console.log(player.name);
-            const client = await getClient(player.garmin_user, player.garmin_pass, `${tokensDir}/${player.name}`);
-            const date = new Date();
-            for(let day_interval=0; day_interval<14; day_interval++) {
-                const steps = await client.getSteps(date);
-                if (steps!=null) {
-                    const dbDate = date.toISOString().substring(0,10);
-                    console.log(dbDate, steps);
-                    await db.runQuery(`CALL AddSteps('${player.name}','${dbDate}','${steps}')`);
-                }
-                date.setDate(date.getDate() - 1); // go back a day
+        for(let day_interval=0; day_interval<14; day_interval++) {
+            const steps = await client.getSteps(date);
+            if (steps!=null) {
+                const dbDate = date.toISOString().substring(0,10);
+                dal.addSteps(player.name, dbDate, steps);
             }
+            date.setDate(date.getDate() - 1); // go back a day
         }
-    });
+    }
 }

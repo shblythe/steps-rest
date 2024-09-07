@@ -14,7 +14,6 @@ const name= myArgs[1];
 const username= myArgs[2];
 const password= myArgs[3];
 
-db.setup().then(async () => {
-    await db.runQuery(`CALL AddGarminPlayer('${name}','${username}','${password}')`);
+db.runQuery(`CALL AddGarminPlayer('${name}','${username}','${password}')`).then(async () => {
     await db.close();
 });
