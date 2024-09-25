@@ -16,6 +16,7 @@ router.post('/:player/:date/:steps', async (req, res) => {
     const date=req.params.date;
     const steps=req.params.steps;
     const last_steps = await dal.getPeriodSteps(player, date, date);
+    console.log(`/${player}/${date}/${steps}`);
     if (steps > last_steps) {
         dal.addSteps(player, date, steps)
             .then(() => {
